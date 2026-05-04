@@ -2,14 +2,11 @@
 
 namespace DMO\SavingsBond\Providers;
 
-
-use Illuminate\Support\Facades\Log;
+use Hasob\FoundationCore\Facades\FoundationCore;
 use Illuminate\Support\Facades\Schema;
-
 use Hasob\FoundationCore\Models\Setting;
-use Hasob\FoundationCore\Models\Organization;
 use Hasob\FoundationCore\Managers\OrganizationManager;
-
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
 class SavingsBondServiceProvider extends ServiceProvider
@@ -48,7 +45,7 @@ class SavingsBondServiceProvider extends ServiceProvider
             'dmo-staff'     =>  [],
         ];
 
-        \FoundationCore::register_roles($app_roles);
+        FoundationCore::register_roles($app_roles);
 
         $app_settings = [
 
@@ -59,10 +56,10 @@ class SavingsBondServiceProvider extends ServiceProvider
 
         if (Schema::hasTable('fc_organizations') && Schema::hasTable('fc_settings')){
 
-            if ($org != null && \FoundationCore::has_feature('savings-bond',$org)){
+            if ($org != null && FoundationCore::has_feature('savings-bond',$org)){
 
                 foreach($app_settings as $key=>$setting){
-                    \FoundationCore::register_setting(
+                    FoundationCore::register_setting(
                         $org, 
                         $key, 
                         $setting['group_name'],
@@ -79,11 +76,11 @@ class SavingsBondServiceProvider extends ServiceProvider
                     return [$item->key => $item->value];
                 });
 
-                \View::share('savings_bond_settings', $app_setting_values);
+                View::share('savings_bond_settings', $app_setting_values);
             }
         }
 
-        if (isset($org) && $org != null && \FoundationCore::has_feature('savings-bond',$org)){
+        if (isset($org) && $org != null && FoundationCore::has_feature('savings-bond',$org)){
 
             //Register the workables available in this module
             //Register the operations for this module   
