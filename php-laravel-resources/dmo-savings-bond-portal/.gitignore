@@ -2,6 +2,11 @@
 /node_modules
 /public/storage
 /storage/*.key
+/storage/logs
+/storage/cache
+/storage/framework
+/storage/debugbar
+/bootstrap/cache
 .env
 .env.backup
 .phpunit.result.cache
