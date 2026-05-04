@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-use App\Models\User;
+use Hasob\FoundationCore\Models\User;
 use Hasob\FoundationCore\Models\Attachment;
 use Hasob\FoundationCore\Models\Department;
 use Hasob\FoundationCore\Models\Organization;
@@ -40,7 +40,7 @@ abstract class TestCase extends BaseTestCase
             'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
             'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
         ])->id;
-        $test_org = Organization::find($test_org_id);
+        $this->test_org = Organization::find($test_org_id);
 
         $test_dept_id = Department::create([
             'key' => 'ict-admin',
@@ -52,8 +52,8 @@ abstract class TestCase extends BaseTestCase
             'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
             'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
         ])->id;
-        $test_dept = Organization::find($test_dept_id);
-                
+        $this->test_dept = Department::find($test_dept_id);
+
         $test_admin_id = User::create([
             'email' => 'admin@app.com',
             'telephone' => '07063321200',
@@ -65,10 +65,10 @@ abstract class TestCase extends BaseTestCase
             'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
             'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
         ])->id;
-        $test_user = User::find($test_admin_id);
+        $this->test_user = User::find($test_admin_id);
 
         Sanctum::actingAs(
-            $test_user,
+            $this->test_user,
             ['*']
         );
     

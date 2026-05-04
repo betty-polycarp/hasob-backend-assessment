@@ -3,8 +3,6 @@
 namespace DMO\SavingsBond\Models;
 
 use Hasob\FoundationCore\Traits\GuidId;
-use Hasob\FoundationCore\Traits\Ledgerable;
-use Hasob\FoundationCore\Traits\Artifactable;
 use Hasob\FoundationCore\Traits\OrganizationalConstraint;
 
 use Eloquent as Model;
@@ -76,7 +74,20 @@ class Offer extends Model
         'tenor_years' => 'integer'
     ];
 
+    /**
+     * @return HasMany
+     */
+    public function bids()
+    {
+        return $this->hasMany(Bid::class, 'offer_id', 'id');
+    }
 
-    
+    /**
+     * @return HasMany
+     */
+    public function subscriptions()
+    {
+        return $this->hasMany(Subscription::class, 'offer_id', 'id');
+    }
 
 }
