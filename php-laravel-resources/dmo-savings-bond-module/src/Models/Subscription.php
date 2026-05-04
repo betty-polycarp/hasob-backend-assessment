@@ -2,24 +2,21 @@
 
 namespace DMO\SavingsBond\Models;
 
-use Hasob\FoundationCore\Traits\GuidId;
-use Hasob\FoundationCore\Traits\Ledgerable;
-use Hasob\FoundationCore\Traits\Artifactable;
-use Hasob\FoundationCore\Traits\OrganizationalConstraint;
-
 use Eloquent as Model;
-
-use Illuminate\Database\Eloquent\SoftDeletes;
+use Hasob\FoundationCore\Traits\GuidId;
+use Hasob\FoundationCore\Traits\OrganizationalConstraint;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class Subscription
- * @package DMO\SavingsBond\Models
+ *
  * @version April 12, 2022, 7:27 pm UTC
  *
- * @property \DMO\SavingsBond\Models\Offer $offer
- * @property \DMO\SavingsBond\Models\User $user
- * @property \DMO\SavingsBond\Models\Broker $broker
+ * @property Offer $offer
+ * @property User $user
+ * @property Broker $broker
  * @property string $organization_id
  * @property string $offer_id
  * @property string $user_id
@@ -34,7 +31,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property string $offer_end_date
  * @property string $offer_settlement_date
  * @property string $offer_maturity_date
- * @property integer $tenor_years
+ * @property int $tenor_years
  * @property string $investor_email
  * @property string $investor_telephone
  * @property string $first_name
@@ -57,18 +54,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Subscription extends Model
 {
     use GuidId;
+    use HasFactory;
     use OrganizationalConstraint;
-    
     use SoftDeletes;
 
-    use HasFactory;
-
     public $table = 'sb_subscriptions';
-    
 
     protected $dates = ['deleted_at'];
-
-
 
     public $fillable = [
         'organization_id',
@@ -103,7 +95,7 @@ class Subscription extends Model
         'bank_verification_number',
         'national_id_number',
         'cscs_id_number',
-        'chn_id_number'
+        'chn_id_number',
     ];
 
     /**
@@ -140,32 +132,30 @@ class Subscription extends Model
         'bank_verification_number' => 'string',
         'national_id_number' => 'string',
         'cscs_id_number' => 'string',
-        'chn_id_number' => 'string'
+        'chn_id_number' => 'string',
     ];
 
-
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * @return HasOne
      **/
     public function offer()
     {
-        return $this->hasOne(\DMO\SavingsBond\Models\Offer::class, 'offer_id', 'id');
+        return $this->hasOne(Offer::class, 'offer_id', 'id');
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * @return HasOne
      **/
     public function user()
     {
-        return $this->hasOne(\DMO\SavingsBond\Models\User::class, 'user_id', 'id');
+        return $this->hasOne(User::class, 'user_id', 'id');
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * @return HasOne
      **/
     public function broker()
     {
-        return $this->hasOne(\DMO\SavingsBond\Models\Broker::class, 'broker_id', 'id');
+        return $this->hasOne(Broker::class, 'broker_id', 'id');
     }
-
 }

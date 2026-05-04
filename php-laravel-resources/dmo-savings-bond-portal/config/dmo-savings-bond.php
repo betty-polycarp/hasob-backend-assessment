@@ -3,7 +3,7 @@
 return [
 
     'hasob_features' => [
-        'savings-bond' => true
-    ]
+        'savings-bond' => true,
+    ],
 
 ];

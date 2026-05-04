@@ -2,21 +2,14 @@
 
 namespace Tests;
 
-
-use Hash;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-
-use Hasob\FoundationCore\Models\User;
-use Hasob\FoundationCore\Models\Attachment;
+use Hash;
 use Hasob\FoundationCore\Models\Department;
 use Hasob\FoundationCore\Models\Organization;
-
-use Laravel\Sanctum\Sanctum;
-
+use Hasob\FoundationCore\Models\User;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
+use Laravel\Sanctum\Sanctum;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -24,13 +17,17 @@ abstract class TestCase extends BaseTestCase
     use DatabaseMigrations;
 
     protected $test_org;
+
     protected $test_user;
+
     protected $test_dept;
+
     protected $faker;
+
     protected function setUp(): void
     {
         parent::setUp();
-        
+
         $test_org_id = Organization::create([
             'org' => 'app',
             'domain' => 'test',
@@ -38,7 +35,7 @@ abstract class TestCase extends BaseTestCase
             'subdomain' => 'sub',
             'is_local_default_organization' => true,
             'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
-            'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
+            'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
         ])->id;
         $this->test_org = Organization::find($test_org_id);
 
@@ -50,7 +47,7 @@ abstract class TestCase extends BaseTestCase
             'physical_location' => '2nd Floor, Room 20 - 28',
             'organization_id' => $test_org_id,
             'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
-            'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
+            'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
         ])->id;
         $this->test_dept = Department::find($test_dept_id);
 
@@ -63,7 +60,7 @@ abstract class TestCase extends BaseTestCase
             'organization_id' => $test_org_id,
             'last_loggedin_at' => Carbon::now()->format('Y-m-d H:i:s'),
             'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
-            'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
+            'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
         ])->id;
         $this->test_user = User::find($test_admin_id);
 
@@ -71,8 +68,6 @@ abstract class TestCase extends BaseTestCase
             $this->test_user,
             ['*']
         );
-    
+
     }
-
-
 }

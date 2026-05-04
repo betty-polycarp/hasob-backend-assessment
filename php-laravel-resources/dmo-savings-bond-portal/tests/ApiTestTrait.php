@@ -1,11 +1,12 @@
-<?php 
+<?php
 
 namespace Tests;
 
 trait ApiTestTrait
 {
     private $response;
-    public function assertApiResponse(Array $actualData)
+
+    public function assertApiResponse(array $actualData)
     {
         $this->assertApiSuccess();
 
@@ -22,10 +23,10 @@ trait ApiTestTrait
         $this->response->assertJson(['success' => true]);
     }
 
-    public function assertModelData(Array $actualData, Array $expectedData)
+    public function assertModelData(array $actualData, array $expectedData)
     {
         foreach ($actualData as $key => $value) {
-            if (in_array($key, ['created_at','updated_at','deleted_at'])) {
+            if (in_array($key, ['created_at', 'updated_at', 'deleted_at'])) {
                 continue;
             }
             $this->assertEquals($actualData[$key], $expectedData[$key]);

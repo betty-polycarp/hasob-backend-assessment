@@ -2,19 +2,15 @@
 
 namespace DMO\SavingsBond\Models;
 
-use Hasob\FoundationCore\Traits\GuidId;
-use Hasob\FoundationCore\Traits\Ledgerable;
-use Hasob\FoundationCore\Traits\Artifactable;
-use Hasob\FoundationCore\Traits\OrganizationalConstraint;
-
 use Eloquent as Model;
-
-use Illuminate\Database\Eloquent\SoftDeletes;
+use Hasob\FoundationCore\Traits\GuidId;
+use Hasob\FoundationCore\Traits\OrganizationalConstraint;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class Broker
- * @package DMO\SavingsBond\Models
+ *
  * @version April 12, 2022, 7:27 pm UTC
  *
  * @property string $organization_id
@@ -26,25 +22,20 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Broker extends Model
 {
     use GuidId;
+    use HasFactory;
     use OrganizationalConstraint;
-    
     use SoftDeletes;
 
-    use HasFactory;
-
     public $table = 'sb_brokers';
-    
 
     protected $dates = ['deleted_at'];
-
-
 
     public $fillable = [
         'organization_id',
         'status',
         'broker_code',
         'full_name',
-        'short_name'
+        'short_name',
     ];
 
     /**
@@ -59,10 +50,6 @@ class Broker extends Model
         'wf_meta_data' => 'string',
         'broker_code' => 'string',
         'full_name' => 'string',
-        'short_name' => 'string'
+        'short_name' => 'string',
     ];
-
-
-    
-
 }

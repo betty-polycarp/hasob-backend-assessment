@@ -2,10 +2,7 @@
 
 namespace DMO\SavingsBond\Listeners;
 
-use DMO\SavingsBond\Models\Subscription;
 use DMO\SavingsBond\Models\SubscriptionCreated;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
 
 class SubscriptionCreatedListener
 {
@@ -22,7 +19,6 @@ class SubscriptionCreatedListener
     /**
      * Handle the event.
      *
-     * @param  SubscriptionCreated  $event
      * @return void
      */
     public function handle(SubscriptionCreated $event)

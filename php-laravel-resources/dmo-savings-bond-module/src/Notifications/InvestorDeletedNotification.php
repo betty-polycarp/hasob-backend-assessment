@@ -1,20 +1,15 @@
 <?php
 
-
 namespace DMO\SavingsBond\Notifications;
 
+use DMO\SavingsBond\Models\Investor;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-use DMO\SavingsBond\Models\Investor;
-
 class InvestorDeletedNotification extends Notification
 {
-
     use Queueable;
-
 
     public $investor;
 
@@ -43,15 +38,15 @@ class InvestorDeletedNotification extends Notification
      * Get the mail representation of the notification.
      *
      * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
+     * @return MailMessage
      */
     public function toMail($notifiable)
     {
         return (new MailMessage)->subject('Investor deleted successfully')
-                                ->markdown(
-                                    'mail.investors.deleted',
-                                    ['investor' => $this->investor]
-                                );
+            ->markdown(
+                'mail.investors.deleted',
+                ['investor' => $this->investor]
+            );
     }
 
     /**
@@ -64,5 +59,4 @@ class InvestorDeletedNotification extends Notification
     {
         return [];
     }
-
 }

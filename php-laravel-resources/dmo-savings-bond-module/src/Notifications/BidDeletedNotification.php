@@ -1,20 +1,15 @@
 <?php
 
-
 namespace DMO\SavingsBond\Notifications;
 
+use DMO\SavingsBond\Models\Bid;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-use DMO\SavingsBond\Models\Bid;
-
 class BidDeletedNotification extends Notification
 {
-
     use Queueable;
-
 
     public $bid;
 
@@ -43,15 +38,15 @@ class BidDeletedNotification extends Notification
      * Get the mail representation of the notification.
      *
      * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
+     * @return MailMessage
      */
     public function toMail($notifiable)
     {
         return (new MailMessage)->subject('Bid deleted successfully')
-                                ->markdown(
-                                    'mail.bids.deleted',
-                                    ['bid' => $this->bid]
-                                );
+            ->markdown(
+                'mail.bids.deleted',
+                ['bid' => $this->bid]
+            );
     }
 
     /**
@@ -64,5 +59,4 @@ class BidDeletedNotification extends Notification
     {
         return [];
     }
-
 }

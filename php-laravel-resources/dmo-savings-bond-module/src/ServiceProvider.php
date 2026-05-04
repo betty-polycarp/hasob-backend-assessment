@@ -1,27 +1,22 @@
 <?php
+
 namespace DMO\SavingsBond;
 
-use DMO\SavingsBond\Facades;
 use DMO\SavingsBond\Providers\SavingsBondEventServiceProvider;
-
 use Illuminate\Contracts\Http\Kernel;
-use Illuminate\Foundation\Application;
 use Illuminate\Routing\Router;
-use Illuminate\Session\SessionManager;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Blade;
-use Illuminate\View\Engines\EngineResolver;
 
 class ServiceProvider extends \Illuminate\Support\ServiceProvider
 {
     /**
-    * Publishes configuration file.
-    *
-    * @return  void
-    */
+     * Publishes configuration file.
+     *
+     * @return void
+     */
     public function boot()
     {
-        $configPath = __DIR__ . '/../config/dmo-savings-bond.php';
+        $configPath = __DIR__.'/../config/dmo-savings-bond.php';
         $this->publishes([$configPath => $this->getConfigPath()], 'config');
 
         $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
@@ -44,34 +39,33 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
         ], 'view-components');
 
         $this->publishes([
-            __DIR__ . '/../database/seeders/SavingsBondSeeder.php' => database_path('seeders/SavingsBondSeeder.php'),
+            __DIR__.'/../database/seeders/SavingsBondSeeder.php' => database_path('seeders/SavingsBondSeeder.php'),
         ], 'seeders');
 
-        
         Blade::componentNamespace('DMO\\SavingsBond\\View\\Components', 'dmo-savings-bond-module');
     }
 
     /**
-    * Make config publishing optional by merging the config from the package.
-    *
-    * @return  void
-    */
+     * Make config publishing optional by merging the config from the package.
+     *
+     * @return void
+     */
     public function register()
     {
-        $configPath = __DIR__ . '/../config/dmo-savings-bond.php';
+        $configPath = __DIR__.'/../config/dmo-savings-bond.php';
         $this->mergeConfigFrom($configPath, 'dmo-savings-bond');
 
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
 
-        $this->app->bind('SavingsBond', function($app) {
-            return new SavingsBond();
+        $this->app->bind('SavingsBond', function ($app) {
+            return new SavingsBond;
         });
 
         $this->app->register(SavingsBondEventServiceProvider::class);
 
     }
 
-        /**
+    /**
      * Get the active router.
      *
      * @return Router
@@ -94,7 +88,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
     /**
      * Publish the config file
      *
-     * @param  string $configPath
+     * @param  string  $configPath
      */
     protected function publishConfig($configPath)
     {
@@ -104,7 +98,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
     /**
      * Register a Middleware
      *
-     * @param  string $middleware
+     * @param  string  $middleware
      */
     protected function registerMiddleware($middleware)
     {

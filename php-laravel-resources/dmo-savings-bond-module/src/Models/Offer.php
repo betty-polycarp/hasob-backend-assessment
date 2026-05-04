@@ -2,46 +2,39 @@
 
 namespace DMO\SavingsBond\Models;
 
+use Eloquent as Model;
 use Hasob\FoundationCore\Traits\GuidId;
 use Hasob\FoundationCore\Traits\OrganizationalConstraint;
-
-use Eloquent as Model;
-
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class Offer
- * @package DMO\SavingsBond\Models
+ *
  * @version April 12, 2022, 7:27 pm UTC
  *
  * @property string $organization_id
  * @property string $status
  * @property string $offer_title
  * @property number $price_per_unit
- * @property integer $max_units_per_investor
+ * @property int $max_units_per_investor
  * @property number $interest_rate_pct
  * @property string $offer_start_date
  * @property string $offer_end_date
  * @property string $offer_settlement_date
  * @property string $offer_maturity_date
- * @property integer $tenor_years
+ * @property int $tenor_years
  */
 class Offer extends Model
 {
     use GuidId;
+    use HasFactory;
     use OrganizationalConstraint;
-    
     use SoftDeletes;
 
-    use HasFactory;
-
     public $table = 'sb_offers';
-    
 
     protected $dates = ['deleted_at'];
-
-
 
     public $fillable = [
         'organization_id',
@@ -54,7 +47,7 @@ class Offer extends Model
         'offer_end_date',
         'offer_settlement_date',
         'offer_maturity_date',
-        'tenor_years'
+        'tenor_years',
     ];
 
     /**
@@ -71,7 +64,7 @@ class Offer extends Model
         'price_per_unit' => 'decimal:2',
         'max_units_per_investor' => 'integer',
         'interest_rate_pct' => 'decimal:2',
-        'tenor_years' => 'integer'
+        'tenor_years' => 'integer',
     ];
 
     /**
@@ -89,5 +82,4 @@ class Offer extends Model
     {
         return $this->hasMany(Subscription::class, 'offer_id', 'id');
     }
-
 }

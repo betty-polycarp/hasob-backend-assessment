@@ -2,18 +2,14 @@
 
 namespace DMO\SavingsBond\Notifications;
 
+use DMO\SavingsBond\Models\Investor;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-use DMO\SavingsBond\Models\Investor;
-
 class InvestorUpdatedNotification extends Notification
 {
-
     use Queueable;
-
 
     public $investor;
 
@@ -42,15 +38,15 @@ class InvestorUpdatedNotification extends Notification
      * Get the mail representation of the notification.
      *
      * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
+     * @return MailMessage
      */
     public function toMail($notifiable)
     {
         return (new MailMessage)->subject('Investor updated successfully')
-                                ->markdown(
-                                    'mail.investors.updated',
-                                    ['investor' => $this->investor]
-                                );
+            ->markdown(
+                'mail.investors.updated',
+                ['investor' => $this->investor]
+            );
     }
 
     /**
@@ -63,5 +59,4 @@ class InvestorUpdatedNotification extends Notification
     {
         return [];
     }
-
 }

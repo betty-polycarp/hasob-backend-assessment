@@ -54,8 +54,8 @@ $response = tap($kernel->handle(
 
 $kernel->terminate($request, $response);
 
-try
-{
+try {
     $app->make('cache')->store('request')->flush();
-    
-} catch(ReflectionException $ex){ }
+
+} catch (ReflectionException $ex) {
+}

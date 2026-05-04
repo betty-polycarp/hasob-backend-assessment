@@ -1,7 +1,7 @@
 <?php
 
 return [
-    
+
     'view_layout' => 'layouts.app',
 
     'hasob_features' => [
@@ -10,6 +10,6 @@ return [
         'sites' => true,
         'ledgers' => true,
         'departments' => true,
-    ]
+    ],
 
 ];

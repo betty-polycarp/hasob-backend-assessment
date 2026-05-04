@@ -2,37 +2,29 @@
 
 namespace DMO\SavingsBond\Controllers\API;
 
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use DMO\SavingsBond\Models\Subscription;
-
 use DMO\SavingsBond\Events\SubscriptionCreated;
-use DMO\SavingsBond\Events\SubscriptionUpdated;
 use DMO\SavingsBond\Events\SubscriptionDeleted;
-
+use DMO\SavingsBond\Events\SubscriptionUpdated;
+use DMO\SavingsBond\Models\Subscription;
 use DMO\SavingsBond\Requests\API\CreateSubscriptionAPIRequest;
 use DMO\SavingsBond\Requests\API\UpdateSubscriptionAPIRequest;
-
-use Hasob\FoundationCore\Traits\ApiResponder;
-use Hasob\FoundationCore\Models\Organization;
-
 use Hasob\FoundationCore\Controllers\BaseController as AppBaseController;
+use Hasob\FoundationCore\Models\Organization;
+use Hasob\FoundationCore\Traits\ApiResponder;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 /**
  * Class SubscriptionController
- * @package DMO\SavingsBond\Controllers\API
  */
-
 class SubscriptionAPIController extends AppBaseController
 {
-
     use ApiResponder;
 
     /**
      * Display a listing of the Subscription.
      * GET|HEAD /subscriptions
      *
-     * @param Request $request
      * @return Response
      */
     public function index(Request $request, Organization $organization)
@@ -45,8 +37,8 @@ class SubscriptionAPIController extends AppBaseController
         if ($request->get('limit')) {
             $query->limit($request->get('limit'));
         }
-        
-        if ($organization != null){
+
+        if ($organization != null) {
             $query->where('organization_id', $organization->id);
         }
 
@@ -59,7 +51,6 @@ class SubscriptionAPIController extends AppBaseController
      * Store a newly created Subscription in storage.
      * POST /subscriptions
      *
-     * @param CreateSubscriptionAPIRequest $request
      *
      * @return Response
      */
@@ -69,8 +60,9 @@ class SubscriptionAPIController extends AppBaseController
 
         /** @var Subscription $subscription */
         $subscription = Subscription::create($input);
-        
+
         SubscriptionCreated::dispatch($subscription);
+
         return $this->sendResponse($subscription->toArray(), 'Subscription saved successfully');
     }
 
@@ -78,8 +70,7 @@ class SubscriptionAPIController extends AppBaseController
      * Display the specified Subscription.
      * GET|HEAD /subscriptions/{id}
      *
-     * @param int $id
-     *
+     * @param  int  $id
      * @return Response
      */
     public function show($id, Organization $organization)
@@ -98,9 +89,7 @@ class SubscriptionAPIController extends AppBaseController
      * Update the specified Subscription in storage.
      * PUT/PATCH /subscriptions/{id}
      *
-     * @param int $id
-     * @param UpdateSubscriptionAPIRequest $request
-     *
+     * @param  int  $id
      * @return Response
      */
     public function update($id, UpdateSubscriptionAPIRequest $request, Organization $organization)
@@ -114,8 +103,9 @@ class SubscriptionAPIController extends AppBaseController
 
         $subscription->fill($request->all());
         $subscription->save();
-        
+
         SubscriptionUpdated::dispatch($subscription);
+
         return $this->sendResponse($subscription->toArray(), 'Subscription updated successfully');
     }
 
@@ -123,11 +113,10 @@ class SubscriptionAPIController extends AppBaseController
      * Remove the specified Subscription from storage.
      * DELETE /subscriptions/{id}
      *
-     * @param int $id
+     * @param  int  $id
+     * @return Response
      *
      * @throws \Exception
-     *
-     * @return Response
      */
     public function destroy($id, Organization $organization)
     {
@@ -140,6 +129,7 @@ class SubscriptionAPIController extends AppBaseController
 
         $subscription->delete();
         SubscriptionDeleted::dispatch($subscription);
+
         return $this->sendSuccess('Subscription deleted successfully');
     }
 }

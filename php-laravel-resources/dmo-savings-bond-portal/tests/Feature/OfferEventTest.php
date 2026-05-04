@@ -3,34 +3,33 @@
 namespace Tests\Feature;
 
 use Carbon\Carbon;
-use Tests\TestCase;
-use Illuminate\Support\Facades\Event;
-
-use DMO\SavingsBond\Models\Offer;
 use DMO\SavingsBond\Events\OfferCreated;
-use DMO\SavingsBond\Events\OfferUpdated;
 use DMO\SavingsBond\Events\OfferDeleted;
+use DMO\SavingsBond\Events\OfferUpdated;
 use DMO\SavingsBond\Listeners\OfferCreatedListener;
-use DMO\SavingsBond\Listeners\OfferUpdatedListener;
 use DMO\SavingsBond\Listeners\OfferDeletedListener;
+use DMO\SavingsBond\Listeners\OfferUpdatedListener;
+use DMO\SavingsBond\Models\Offer;
+use Illuminate\Support\Facades\Event;
+use Tests\TestCase;
 
 class OfferEventTest extends TestCase
 {
     private function makeOffer(): Offer
     {
         return Offer::create([
-            'organization_id'        => $this->test_org->id,
-            'display_ordinal'        => 1,
-            'status'                 => 'open',
-            'offer_title'            => 'FGN Savings Bond - Event Test',
-            'price_per_unit'         => 1000.00,
+            'organization_id' => $this->test_org->id,
+            'display_ordinal' => 1,
+            'status' => 'open',
+            'offer_title' => 'FGN Savings Bond - Event Test',
+            'price_per_unit' => 1000.00,
             'max_units_per_investor' => 10000,
-            'interest_rate_pct'      => 12.50,
-            'offer_start_date'       => Carbon::now()->format('Y-m-d H:i:s'),
-            'offer_end_date'         => Carbon::now()->addDays(7)->format('Y-m-d H:i:s'),
-            'offer_settlement_date'  => Carbon::now()->addDays(10)->format('Y-m-d H:i:s'),
-            'offer_maturity_date'    => Carbon::now()->addYears(2)->format('Y-m-d H:i:s'),
-            'tenor_years'            => 2,
+            'interest_rate_pct' => 12.50,
+            'offer_start_date' => Carbon::now()->format('Y-m-d H:i:s'),
+            'offer_end_date' => Carbon::now()->addDays(7)->format('Y-m-d H:i:s'),
+            'offer_settlement_date' => Carbon::now()->addDays(10)->format('Y-m-d H:i:s'),
+            'offer_maturity_date' => Carbon::now()->addYears(2)->format('Y-m-d H:i:s'),
+            'tenor_years' => 2,
         ]);
     }
 

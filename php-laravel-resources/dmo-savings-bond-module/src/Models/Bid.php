@@ -2,23 +2,20 @@
 
 namespace DMO\SavingsBond\Models;
 
-use Hasob\FoundationCore\Traits\GuidId;
-use Hasob\FoundationCore\Traits\Ledgerable;
-use Hasob\FoundationCore\Traits\Artifactable;
-use Hasob\FoundationCore\Traits\OrganizationalConstraint;
-
 use Eloquent as Model;
-
-use Illuminate\Database\Eloquent\SoftDeletes;
+use Hasob\FoundationCore\Traits\GuidId;
+use Hasob\FoundationCore\Traits\OrganizationalConstraint;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class Bid
- * @package DMO\SavingsBond\Models
+ *
  * @version April 12, 2022, 7:27 pm UTC
  *
- * @property \DMO\SavingsBond\Models\Offer $offer
- * @property \DMO\SavingsBond\Models\User $user
+ * @property Offer $offer
+ * @property User $user
  * @property string $organization_id
  * @property string $offer_id
  * @property string $user_id
@@ -29,16 +26,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Bid extends Model
 {
     use GuidId;
+    use HasFactory;
     use OrganizationalConstraint;
     use SoftDeletes;
-    use HasFactory;
 
     public $table = 'sb_bids';
-    
 
     protected $dates = ['deleted_at'];
-
-
 
     public $fillable = [
         'organization_id',
@@ -46,7 +40,7 @@ class Bid extends Model
         'user_id',
         'status',
         'price_per_unit',
-        'total_price'
+        'total_price',
     ];
 
     /**
@@ -61,24 +55,22 @@ class Bid extends Model
         'wf_meta_data' => 'string',
         'units_requested' => 'integer',
         'price_per_unit' => 'decimal:2',
-        'total_price' => 'decimal:2'
+        'total_price' => 'decimal:2',
     ];
 
-
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * @return HasOne
      **/
     public function offer()
     {
-        return $this->hasOne(\DMO\SavingsBond\Models\Offer::class, 'offer_id', 'id');
+        return $this->hasOne(Offer::class, 'offer_id', 'id');
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * @return HasOne
      **/
     public function user()
     {
-        return $this->hasOne(\DMO\SavingsBond\Models\User::class, 'user_id', 'id');
+        return $this->hasOne(User::class, 'user_id', 'id');
     }
-
 }

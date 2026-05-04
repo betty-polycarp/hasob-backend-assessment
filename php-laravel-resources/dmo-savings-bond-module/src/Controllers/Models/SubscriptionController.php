@@ -2,58 +2,51 @@
 
 namespace DMO\SavingsBond\Controllers\Models;
 
-use DMO\SavingsBond\Models\Subscription;
-
+use DMO\SavingsBond\DataTables\SubscriptionDataTable;
 use DMO\SavingsBond\Events\SubscriptionCreated;
-use DMO\SavingsBond\Events\SubscriptionUpdated;
 use DMO\SavingsBond\Events\SubscriptionDeleted;
-
+use DMO\SavingsBond\Events\SubscriptionUpdated;
+use DMO\SavingsBond\Models\Subscription;
 use DMO\SavingsBond\Requests\CreateSubscriptionRequest;
 use DMO\SavingsBond\Requests\UpdateSubscriptionRequest;
-
-use DMO\SavingsBond\DataTables\SubscriptionDataTable;
-
+use Flash;
 use Hasob\FoundationCore\Controllers\BaseController;
 use Hasob\FoundationCore\Models\Organization;
-
-use Flash;
-
+use Hasob\FoundationCore\View\Components\CardDataView;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-
 
 class SubscriptionController extends BaseController
 {
     /**
      * Display a listing of the Subscription.
      *
-     * @param SubscriptionDataTable $subscriptionDataTable
      * @return Response
      */
     public function index(Organization $org, SubscriptionDataTable $subscriptionDataTable)
     {
         $current_user = Auth()->user();
 
-        $cdv_subscriptions = new \Hasob\FoundationCore\View\Components\CardDataView(Subscription::class, "dmo-savings-bond-module::pages.subscriptions.card_view_item");
-        $cdv_subscriptions->setDataQuery(['organization_id'=>$org->id])
-                        //->addDataGroup('label','field','value')
-                        //->setSearchFields(['field_to_search1','field_to_search2'])
-                        //->addDataOrder('display_ordinal','DESC')
-                        //->addDataOrder('id','DESC')
-                        ->enableSearch(true)
-                        ->enablePagination(true)
-                        ->setPaginationLimit(20)
-                        ->setSearchPlaceholder('Search Subscription');
+        $cdv_subscriptions = new CardDataView(Subscription::class, 'dmo-savings-bond-module::pages.subscriptions.card_view_item');
+        $cdv_subscriptions->setDataQuery(['organization_id' => $org->id])
+                        // ->addDataGroup('label','field','value')
+                        // ->setSearchFields(['field_to_search1','field_to_search2'])
+                        // ->addDataOrder('display_ordinal','DESC')
+                        // ->addDataOrder('id','DESC')
+            ->enableSearch(true)
+            ->enablePagination(true)
+            ->setPaginationLimit(20)
+            ->setSearchPlaceholder('Search Subscription');
 
-        if (request()->expectsJson()){
+        if (request()->expectsJson()) {
             return $cdv_subscriptions->render();
         }
 
         return view('dmo-savings-bond-module::pages.subscriptions.card_view_index')
-                    ->with('current_user', $current_user)
-                    ->with('months_list', BaseController::monthsList())
-                    ->with('states_list', BaseController::statesList())
-                    ->with('cdv_subscriptions', $cdv_subscriptions);
+            ->with('current_user', $current_user)
+            ->with('months_list', BaseController::monthsList())
+            ->with('states_list', BaseController::statesList())
+            ->with('cdv_subscriptions', $cdv_subscriptions);
 
         /*
         return $subscriptionDataTable->render('dmo-savings-bond-module::pages.subscriptions.index',[
@@ -77,7 +70,6 @@ class SubscriptionController extends BaseController
     /**
      * Store a newly created Subscription in storage.
      *
-     * @param CreateSubscriptionRequest $request
      *
      * @return Response
      */
@@ -88,17 +80,17 @@ class SubscriptionController extends BaseController
         /** @var Subscription $subscription */
         $subscription = Subscription::create($input);
 
-        //Flash::success('Subscription saved successfully.');
+        // Flash::success('Subscription saved successfully.');
 
         SubscriptionCreated::dispatch($subscription);
+
         return redirect(route('sb.subscriptions.index'));
     }
 
     /**
      * Display the specified Subscription.
      *
-     * @param  int $id
-     *
+     * @param  int  $id
      * @return Response
      */
     public function show(Organization $org, $id)
@@ -107,7 +99,7 @@ class SubscriptionController extends BaseController
         $subscription = Subscription::find($id);
 
         if (empty($subscription)) {
-            //Flash::error('Subscription not found');
+            // Flash::error('Subscription not found');
 
             return redirect(route('sb.subscriptions.index'));
         }
@@ -118,8 +110,7 @@ class SubscriptionController extends BaseController
     /**
      * Show the form for editing the specified Subscription.
      *
-     * @param  int $id
-     *
+     * @param  int  $id
      * @return Response
      */
     public function edit(Organization $org, $id)
@@ -128,7 +119,7 @@ class SubscriptionController extends BaseController
         $subscription = Subscription::find($id);
 
         if (empty($subscription)) {
-            //Flash::error('Subscription not found');
+            // Flash::error('Subscription not found');
 
             return redirect(route('sb.subscriptions.index'));
         }
@@ -139,9 +130,7 @@ class SubscriptionController extends BaseController
     /**
      * Update the specified Subscription in storage.
      *
-     * @param  int              $id
-     * @param UpdateSubscriptionRequest $request
-     *
+     * @param  int  $id
      * @return Response
      */
     public function update(Organization $org, $id, UpdateSubscriptionRequest $request)
@@ -150,7 +139,7 @@ class SubscriptionController extends BaseController
         $subscription = Subscription::find($id);
 
         if (empty($subscription)) {
-            //Flash::error('Subscription not found');
+            // Flash::error('Subscription not found');
 
             return redirect(route('sb.subscriptions.index'));
         }
@@ -158,20 +147,20 @@ class SubscriptionController extends BaseController
         $subscription->fill($request->all());
         $subscription->save();
 
-        //Flash::success('Subscription updated successfully.');
-        
+        // Flash::success('Subscription updated successfully.');
+
         SubscriptionUpdated::dispatch($subscription);
+
         return redirect(route('sb.subscriptions.index'));
     }
 
     /**
      * Remove the specified Subscription from storage.
      *
-     * @param  int $id
+     * @param  int  $id
+     * @return Response
      *
      * @throws \Exception
-     *
-     * @return Response
      */
     public function destroy(Organization $org, $id)
     {
@@ -179,33 +168,34 @@ class SubscriptionController extends BaseController
         $subscription = Subscription::find($id);
 
         if (empty($subscription)) {
-            //Flash::error('Subscription not found');
+            // Flash::error('Subscription not found');
 
             return redirect(route('sb.subscriptions.index'));
         }
 
         $subscription->delete();
 
-        //Flash::success('Subscription deleted successfully.');
+        // Flash::success('Subscription deleted successfully.');
         SubscriptionDeleted::dispatch($subscription);
+
         return redirect(route('sb.subscriptions.index'));
     }
 
-        
-    public function processBulkUpload(Organization $org, Request $request){
+    public function processBulkUpload(Organization $org, Request $request)
+    {
 
-        $attachedFileName = time() . '.' . $request->file->getClientOriginalExtension();
+        $attachedFileName = time().'.'.$request->file->getClientOriginalExtension();
         $request->file->move(public_path('uploads'), $attachedFileName);
         $path_to_file = public_path('uploads').'/'.$attachedFileName;
 
-        //Process each line
+        // Process each line
         $loop = 1;
         $errors = [];
         $lines = file($path_to_file);
 
         if (count($lines) > 1) {
             foreach ($lines as $line) {
-                
+
                 if ($loop > 1) {
                     $data = explode(',', $line);
                     // if (count($invalids) > 0) {
@@ -220,13 +210,14 @@ class SubscriptionController extends BaseController
                 }
                 $loop++;
             }
-        }else{
+        } else {
             $errors[] = 'The uploaded csv file is empty';
         }
-        
+
         if (count($errors) > 0) {
             return $this->sendError($this->array_flatten($errors), 'Errors processing file');
         }
+
         return $this->sendResponse($subject->toArray(), 'Bulk upload completed successfully');
     }
 }

@@ -3,8 +3,8 @@
 namespace Tests\Feature;
 
 use Carbon\Carbon;
-use Tests\TestCase;
 use DMO\SavingsBond\Models\Offer;
+use Tests\TestCase;
 
 class OfferCrudTest extends TestCase
 {
@@ -16,18 +16,18 @@ class OfferCrudTest extends TestCase
     private function offerPayload(array $overrides = []): array
     {
         return array_merge([
-            'organization_id'        => $this->test_org->id,
-            'display_ordinal'        => 1,
-            'status'                 => 'open',
-            'offer_title'            => 'FGN Savings Bond March 2026',
-            'price_per_unit'         => 1000.00,
+            'organization_id' => $this->test_org->id,
+            'display_ordinal' => 1,
+            'status' => 'open',
+            'offer_title' => 'FGN Savings Bond March 2026',
+            'price_per_unit' => 1000.00,
             'max_units_per_investor' => 10000,
-            'interest_rate_pct'      => 12.50,
-            'offer_start_date'       => Carbon::now()->format('Y-m-d H:i:s'),
-            'offer_end_date'         => Carbon::now()->addDays(7)->format('Y-m-d H:i:s'),
-            'offer_settlement_date'  => Carbon::now()->addDays(10)->format('Y-m-d H:i:s'),
-            'offer_maturity_date'    => Carbon::now()->addYears(2)->format('Y-m-d H:i:s'),
-            'tenor_years'            => 2,
+            'interest_rate_pct' => 12.50,
+            'offer_start_date' => Carbon::now()->format('Y-m-d H:i:s'),
+            'offer_end_date' => Carbon::now()->addDays(7)->format('Y-m-d H:i:s'),
+            'offer_settlement_date' => Carbon::now()->addDays(10)->format('Y-m-d H:i:s'),
+            'offer_maturity_date' => Carbon::now()->addYears(2)->format('Y-m-d H:i:s'),
+            'tenor_years' => 2,
         ], $overrides);
     }
 
@@ -40,9 +40,9 @@ class OfferCrudTest extends TestCase
 
         $this->assertNotEmpty($offer->id);
         $this->assertDatabaseHas('sb_offers', [
-            'id'          => $offer->id,
+            'id' => $offer->id,
             'offer_title' => 'FGN Savings Bond March 2026',
-            'status'      => 'open',
+            'status' => 'open',
             'tenor_years' => 2,
         ]);
     }
@@ -72,7 +72,7 @@ class OfferCrudTest extends TestCase
         $offer = Offer::create($this->offerPayload(['status' => 'open', 'tenor_years' => 2]));
 
         $offer->fill([
-            'status'      => 'closed',
+            'status' => 'closed',
             'tenor_years' => 5,
             'offer_title' => 'FGN Savings Bond - Updated',
         ]);
@@ -83,8 +83,8 @@ class OfferCrudTest extends TestCase
         $this->assertEquals(5, $reloaded->tenor_years);
         $this->assertEquals('FGN Savings Bond - Updated', $reloaded->offer_title);
         $this->assertDatabaseHas('sb_offers', [
-            'id'          => $offer->id,
-            'status'      => 'closed',
+            'id' => $offer->id,
+            'status' => 'closed',
             'tenor_years' => 5,
         ]);
     }
@@ -93,7 +93,7 @@ class OfferCrudTest extends TestCase
     public function it_soft_deletes_an_offer_record()
     {
         $offer = Offer::create($this->offerPayload());
-        $id    = $offer->id;
+        $id = $offer->id;
 
         $offer->delete();
 
@@ -107,7 +107,7 @@ class OfferCrudTest extends TestCase
     public function it_force_deletes_an_offer_record()
     {
         $offer = Offer::create($this->offerPayload());
-        $id    = $offer->id;
+        $id = $offer->id;
 
         $offer->forceDelete();
 

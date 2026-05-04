@@ -1,36 +1,34 @@
 <?php
 
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-
+use App\Http\Controllers\Dashboard\DashboardController;
+use App\Http\Controllers\Frontend\FrontendController;
+use Hasob\FoundationCore\Middleware\IdentifyOrganization;
 use Illuminate\Support\Facades\Route;
 
-
-$orgRoutes = function() {
+$orgRoutes = function () {
     Route::group([
-        'middleware' => \Hasob\FoundationCore\Middleware\IdentifyOrganization::class,
+        'middleware' => IdentifyOrganization::class,
     ], function () {
 
-        //Frontend routes
-        Route::get('/', [\App\Http\Controllers\Frontend\FrontendController::class, 'displayHome'])->name('home');
+        // Frontend routes
+        Route::get('/', [FrontendController::class, 'displayHome'])->name('home');
 
-        \Auth::routes();
-        \SavingsBond::public_routes();
-        \FoundationCore::public_routes();
+        Auth::routes();
+        SavingsBond::public_routes();
+        FoundationCore::public_routes();
 
         Route::middleware(['auth'])->group(function () {
 
-            //Package Routes
-            \SavingsBond::routes();
-            \FoundationCore::routes();
+            // Package Routes
+            SavingsBond::routes();
+            FoundationCore::routes();
 
-            //Dashboard Routes
-            Route::get('/dashboard', [\App\Http\Controllers\Dashboard\DashboardController::class, 'index'])->name('dashboard');
-            
+            // Dashboard Routes
+            Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
         });
 
     });
 };
-
 
 Route::group([], $orgRoutes);

@@ -2,23 +2,20 @@
 
 namespace DMO\SavingsBond\Models;
 
-use Hasob\FoundationCore\Traits\GuidId;
-use Hasob\FoundationCore\Traits\Ledgerable;
-use Hasob\FoundationCore\Traits\Artifactable;
-use Hasob\FoundationCore\Traits\OrganizationalConstraint;
-
 use Eloquent as Model;
-
-use Illuminate\Database\Eloquent\SoftDeletes;
+use Hasob\FoundationCore\Traits\GuidId;
+use Hasob\FoundationCore\Traits\OrganizationalConstraint;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class Investor
- * @package DMO\SavingsBond\Models
+ *
  * @version April 12, 2022, 7:27 pm UTC
  *
- * @property \DMO\SavingsBond\Models\Broker $broker
- * @property \DMO\SavingsBond\Models\User $user
+ * @property Broker $broker
+ * @property User $user
  * @property string $organization_id
  * @property string $broker_id
  * @property string $user_id
@@ -40,18 +37,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Investor extends Model
 {
     use GuidId;
+    use HasFactory;
     use OrganizationalConstraint;
-    
     use SoftDeletes;
 
-    use HasFactory;
-
     public $table = 'sb_investors';
-    
 
     protected $dates = ['deleted_at'];
-
-
 
     public $fillable = [
         'organization_id',
@@ -70,7 +62,7 @@ class Investor extends Model
         'bank_verification_number',
         'national_id_number',
         'cscs_id_number',
-        'chn_id_number'
+        'chn_id_number',
     ];
 
     /**
@@ -105,24 +97,22 @@ class Investor extends Model
         'cscs_meta_data' => 'string',
         'chn_id_number' => 'string',
         'is_chn_id_verified' => 'boolean',
-        'chn_meta_data' => 'string'
+        'chn_meta_data' => 'string',
     ];
 
-
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * @return HasOne
      **/
     public function broker()
     {
-        return $this->hasOne(\DMO\SavingsBond\Models\Broker::class, 'broker_id', 'id');
+        return $this->hasOne(Broker::class, 'broker_id', 'id');
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * @return HasOne
      **/
     public function user()
     {
-        return $this->hasOne(\DMO\SavingsBond\Models\User::class, 'user_id', 'id');
+        return $this->hasOne(User::class, 'user_id', 'id');
     }
-
 }

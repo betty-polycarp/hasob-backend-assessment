@@ -3,24 +3,26 @@
 namespace DMO\SavingsBond\DataTables;
 
 use DMO\SavingsBond\Models\Broker;
-use Yajra\DataTables\Services\DataTable;
-use Yajra\DataTables\EloquentDataTable;
-
 use Hasob\FoundationCore\Models\Organization;
+use Illuminate\Database\Eloquent\Builder;
+use Yajra\DataTables\DataTableAbstract;
+use Yajra\DataTables\EloquentDataTable;
+use Yajra\DataTables\Services\DataTable;
 
 class BrokerDataTable extends DataTable
 {
     protected $organization;
 
-    public function __construct(Organization $organization){
+    public function __construct(Organization $organization)
+    {
         $this->organization = $organization;
     }
 
     /**
      * Build DataTable class.
      *
-     * @param mixed $query Results from query() method.
-     * @return \Yajra\DataTables\DataTableAbstract
+     * @param  mixed  $query  Results from query() method.
+     * @return DataTableAbstract
      */
     public function dataTable($query)
     {
@@ -32,15 +34,15 @@ class BrokerDataTable extends DataTable
     /**
      * Get query source of dataTable.
      *
-     * @param \App\Models\Broker $model
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @param  \App\Models\Broker  $model
+     * @return Builder
      */
     public function query(Broker $model)
     {
-        if ($this->organization != null){
-            return $model->newQuery()->where("organization_id", $this->organization->id);
+        if ($this->organization != null) {
+            return $model->newQuery()->where('organization_id', $this->organization->id);
         }
-        
+
         return $model->newQuery();
     }
 
@@ -56,15 +58,15 @@ class BrokerDataTable extends DataTable
             ->minifiedAjax()
             ->addAction(['width' => '120px', 'printable' => false])
             ->parameters([
-                'dom'       => 'Bfrtip',
+                'dom' => 'Bfrtip',
                 'stateSave' => true,
-                'order'     => [[0, 'desc']],
-                'buttons'   => [
-                    ['extend' => 'create', 'className' => 'btn btn-primary btn-outline btn-xs no-corner',],
-                    ['extend' => 'export', 'className' => 'btn btn-primary btn-outline btn-xs no-corner',],
-                    ['extend' => 'print', 'className' => 'btn btn-primary btn-outline btn-xs no-corner',],
-                    ['extend' => 'reset', 'className' => 'btn btn-primary btn-outline btn-xs no-corner',],
-                    ['extend' => 'reload', 'className' => 'btn btn-primary btn-outline btn-xs no-corner',],
+                'order' => [[0, 'desc']],
+                'buttons' => [
+                    ['extend' => 'create', 'className' => 'btn btn-primary btn-outline btn-xs no-corner'],
+                    ['extend' => 'export', 'className' => 'btn btn-primary btn-outline btn-xs no-corner'],
+                    ['extend' => 'print', 'className' => 'btn btn-primary btn-outline btn-xs no-corner'],
+                    ['extend' => 'reset', 'className' => 'btn btn-primary btn-outline btn-xs no-corner'],
+                    ['extend' => 'reload', 'className' => 'btn btn-primary btn-outline btn-xs no-corner'],
                 ],
             ]);
     }
@@ -80,7 +82,7 @@ class BrokerDataTable extends DataTable
             'status',
             'broker_code',
             'full_name',
-            'short_name'
+            'short_name',
         ];
     }
 
@@ -91,6 +93,6 @@ class BrokerDataTable extends DataTable
      */
     protected function filename()
     {
-        return 'brokers_datatable_' . time();
+        return 'brokers_datatable_'.time();
     }
 }

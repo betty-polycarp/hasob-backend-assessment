@@ -2,10 +2,7 @@
 
 namespace DMO\SavingsBond\Listeners;
 
-use DMO\SavingsBond\Models\Offer;
 use DMO\SavingsBond\Events\OfferUpdated;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
 
 class OfferUpdatedListener
 {
@@ -22,7 +19,6 @@ class OfferUpdatedListener
     /**
      * Handle the event.
      *
-     * @param  OfferUpdated  $event
      * @return void
      */
     public function handle(OfferUpdated $event)
