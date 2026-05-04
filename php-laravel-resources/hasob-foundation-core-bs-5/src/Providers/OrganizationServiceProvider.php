@@ -31,6 +31,10 @@ class OrganizationServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        if ($this->app->runningInConsole()) {
+            return;
+        }
+
         $host = request()->getHost();
         $manager = new OrganizationManager();
         $tenant = $manager->loadTenant($host);
