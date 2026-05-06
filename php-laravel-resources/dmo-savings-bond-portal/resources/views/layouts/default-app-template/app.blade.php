@@ -61,11 +61,11 @@
 		<div class="page-wrapper">
 			<div class="page-content">
 
-				<div class="page-breadcrumb d-none d-sm-flex align-items-center">
+				<div class="page-breadcrumb d-flex flex-wrap align-items-center gap-2">
 					<div class="breadcrumb-title pe-3">
 						@yield('page_title')
 					</div>
-					<div class="ms-auto">
+					<div class="ms-sm-auto">
 						<div class="btn-group" role="group" aria-label="Action Buttons">
 							@yield('page_title_buttons')
 						</div>
