@@ -2,7 +2,7 @@
 
 namespace DMO\SavingsBond\Requests\API;
 
-use DMO\SavingsBond\Requests\AppBaseFormRequest;
+use Hasob\FoundationCore\Requests\AppBaseFormRequest;
 
 class CreateOfferAPIRequest extends AppBaseFormRequest
 {
@@ -24,18 +24,20 @@ class CreateOfferAPIRequest extends AppBaseFormRequest
     public function rules()
     {
         return [
-            'organization_id' => 'required',
-            'display_ordinal' => 'nullable|min:0|max:365',
-            'wf_status' => 'max:100',
-            'wf_meta_data' => 'max:1000',
-            'offer_title' => 'required|email',
-            'price_per_unit' => 'required|min:0|max:100000000',
-            'max_units_per_investor' => 'required|min:1|max:1000000000',
-            'interest_rate_pct' => 'required|min:0|max:100',
-            'offer_start_date' => 'required',
-            'offer_end_date' => 'required',
-            'offer_settlement_date' => 'required',
-            'offer_maturity_date' => 'required',
+            'organization_id'        => 'required',
+            'display_ordinal'        => 'nullable|integer|min:0|max:365',
+            'status'                 => 'required|string|max:50',
+            'wf_status'              => 'nullable|max:100',
+            'wf_meta_data'           => 'nullable|max:1000',
+            'offer_title'            => 'required|string|max:255',
+            'price_per_unit'         => 'required|numeric|min:0|max:100000000',
+            'max_units_per_investor' => 'required|integer|min:1|max:1000000000',
+            'interest_rate_pct'      => 'required|numeric|min:0|max:100',
+            'offer_start_date'       => 'required|date',
+            'offer_end_date'         => 'required|date|after_or_equal:offer_start_date',
+            'offer_settlement_date'  => 'required|date|after_or_equal:offer_end_date',
+            'offer_maturity_date'    => 'required|date|after_or_equal:offer_settlement_date',
+            'tenor_years'            => 'nullable|integer|min:0|max:100',
         ];
     }
 
