@@ -43,6 +43,7 @@ class OfferController extends BaseController
         }
 
         return view('dmo-savings-bond-module::pages.offers.card_view_index')
+            ->with('organization', $org)
             ->with('current_user', $current_user)
             ->with('months_list', BaseController::monthsList())
             ->with('states_list', BaseController::statesList())
@@ -96,7 +97,7 @@ class OfferController extends BaseController
     public function show(Organization $org, $id)
     {
         /** @var Offer $offer */
-        $offer = Offer::find($id);
+        $offer = Offer::with(['bids', 'subscriptions'])->find($id);
 
         if (empty($offer)) {
             // Flash::error('Offer not found');
@@ -104,7 +105,10 @@ class OfferController extends BaseController
             return redirect(route('sb.offers.index'));
         }
 
-        return view('dmo-savings-bond-module::pages.offers.show')->with('offer', $offer);
+        return view('dmo-savings-bond-module::pages.offers.show')
+            ->with('organization', $org)
+            ->with('offer', $offer)
+            ->with('id', $offer->id);
     }
 
     /**

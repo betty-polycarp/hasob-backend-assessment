@@ -1,140 +1,117 @@
-<!-- Status Field -->
-<div id="div_offer_status" class="col-sm-12 mb-10">
-    <p>
-        {!! Form::label('status', 'Status:', ['class'=>'control-label']) !!} 
-        <span id="spn_offer_status">
-        @if (isset($offer->status) && empty($offer->status)==false)
-            {!! $offer->status !!}
-        @else
-            N/A
-        @endif
-        </span>
-    </p>
-</div>
+@php
+    $statusBadge = function ($status) {
+        $map = [
+            'open'      => 'success',
+            'draft'     => 'secondary',
+            'closed'    => 'warning',
+            'settled'   => 'info',
+            'matured'   => 'primary',
+            'cancelled' => 'danger',
+        ];
+        $key = is_string($status) ? strtolower($status) : '';
+        return $map[$key] ?? 'secondary';
+    };
+@endphp
 
-<!-- Offer Title Field -->
-<div id="div_offer_offer_title" class="col-sm-12 mb-10">
-    <p>
-        {!! Form::label('offer_title', 'Offer Title:', ['class'=>'control-label']) !!} 
-        <span id="spn_offer_offer_title">
-        @if (isset($offer->offer_title) && empty($offer->offer_title)==false)
-            {!! $offer->offer_title !!}
-        @else
-            N/A
-        @endif
-        </span>
-    </p>
-</div>
+<div class="row g-3">
 
-<!-- Price Per Unit Field -->
-<div id="div_offer_price_per_unit" class="col-sm-12 mb-10">
-    <p>
-        {!! Form::label('price_per_unit', 'Price Per Unit:', ['class'=>'control-label']) !!} 
-        <span id="spn_offer_price_per_unit">
-        @if (isset($offer->price_per_unit) && empty($offer->price_per_unit)==false)
-            {!! $offer->price_per_unit !!}
-        @else
-            N/A
-        @endif
-        </span>
-    </p>
-</div>
+    <!-- Offer Title -->
+    <div id="div_offer_offer_title" class="col-md-12">
+        <label class="form-label text-muted small mb-1">Offer Title</label>
+        <div class="fw-semibold fs-5" id="spn_offer_offer_title">
+            {{ $offer->offer_title ?? 'N/A' }}
+        </div>
+    </div>
 
-<!-- Max Units Per Investor Field -->
-<div id="div_offer_max_units_per_investor" class="col-sm-12 mb-10">
-    <p>
-        {!! Form::label('max_units_per_investor', 'Max Units Per Investor:', ['class'=>'control-label']) !!} 
-        <span id="spn_offer_max_units_per_investor">
-        @if (isset($offer->max_units_per_investor) && empty($offer->max_units_per_investor)==false)
-            {!! $offer->max_units_per_investor !!}
-        @else
-            N/A
-        @endif
-        </span>
-    </p>
-</div>
+    <!-- Status -->
+    <div id="div_offer_status" class="col-md-6">
+        <label class="form-label text-muted small mb-1">Status</label>
+        <div>
+            <span id="spn_offer_status" class="badge bg-{{ $statusBadge($offer->status ?? null) }}">
+                {{ $offer->status ?? 'N/A' }}
+            </span>
+        </div>
+    </div>
 
-<!-- Interest Rate Pct Field -->
-<div id="div_offer_interest_rate_pct" class="col-sm-12 mb-10">
-    <p>
-        {!! Form::label('interest_rate_pct', 'Interest Rate Pct:', ['class'=>'control-label']) !!} 
-        <span id="spn_offer_interest_rate_pct">
-        @if (isset($offer->interest_rate_pct) && empty($offer->interest_rate_pct)==false)
-            {!! $offer->interest_rate_pct !!}
-        @else
-            N/A
-        @endif
-        </span>
-    </p>
-</div>
+    <!-- Tenor -->
+    <div id="div_offer_tenor_years" class="col-md-6">
+        <label class="form-label text-muted small mb-1">Tenor</label>
+        <div>
+            <span id="spn_offer_tenor_years">{{ $offer->tenor_years ?? 'N/A' }}</span>
+            @if (isset($offer->tenor_years) && $offer->tenor_years !== '')
+                year{{ ((int) $offer->tenor_years) === 1 ? '' : 's' }}
+            @endif
+        </div>
+    </div>
 
-<!-- Offer Start Date Field -->
-<div id="div_offer_offer_start_date" class="col-sm-12 mb-10">
-    <p>
-        {!! Form::label('offer_start_date', 'Offer Start Date:', ['class'=>'control-label']) !!} 
-        <span id="spn_offer_offer_start_date">
-        @if (isset($offer->offer_start_date) && empty($offer->offer_start_date)==false)
-            {!! $offer->offer_start_date !!}
-        @else
-            N/A
-        @endif
-        </span>
-    </p>
-</div>
+    <!-- Price per unit -->
+    <div id="div_offer_price_per_unit" class="col-md-4">
+        <label class="form-label text-muted small mb-1">Price Per Unit</label>
+        <div>
+            <span id="spn_offer_price_per_unit">
+                {{ isset($offer->price_per_unit) ? number_format((float) $offer->price_per_unit, 2) : 'N/A' }}
+            </span>
+        </div>
+    </div>
 
-<!-- Offer End Date Field -->
-<div id="div_offer_offer_end_date" class="col-sm-12 mb-10">
-    <p>
-        {!! Form::label('offer_end_date', 'Offer End Date:', ['class'=>'control-label']) !!} 
-        <span id="spn_offer_offer_end_date">
-        @if (isset($offer->offer_end_date) && empty($offer->offer_end_date)==false)
-            {!! $offer->offer_end_date !!}
-        @else
-            N/A
-        @endif
-        </span>
-    </p>
-</div>
+    <!-- Max units per investor -->
+    <div id="div_offer_max_units_per_investor" class="col-md-4">
+        <label class="form-label text-muted small mb-1">Max Units / Investor</label>
+        <div>
+            <span id="spn_offer_max_units_per_investor">
+                {{ isset($offer->max_units_per_investor) ? number_format((int) $offer->max_units_per_investor) : 'N/A' }}
+            </span>
+        </div>
+    </div>
 
-<!-- Offer Settlement Date Field -->
-<div id="div_offer_offer_settlement_date" class="col-sm-12 mb-10">
-    <p>
-        {!! Form::label('offer_settlement_date', 'Offer Settlement Date:', ['class'=>'control-label']) !!} 
-        <span id="spn_offer_offer_settlement_date">
-        @if (isset($offer->offer_settlement_date) && empty($offer->offer_settlement_date)==false)
-            {!! $offer->offer_settlement_date !!}
-        @else
-            N/A
-        @endif
-        </span>
-    </p>
-</div>
+    <!-- Interest rate -->
+    <div id="div_offer_interest_rate_pct" class="col-md-4">
+        <label class="form-label text-muted small mb-1">Interest Rate</label>
+        <div>
+            <span id="spn_offer_interest_rate_pct">
+                {{ isset($offer->interest_rate_pct) ? number_format((float) $offer->interest_rate_pct, 2) . '%' : 'N/A' }}
+            </span>
+        </div>
+    </div>
 
-<!-- Offer Maturity Date Field -->
-<div id="div_offer_offer_maturity_date" class="col-sm-12 mb-10">
-    <p>
-        {!! Form::label('offer_maturity_date', 'Offer Maturity Date:', ['class'=>'control-label']) !!} 
-        <span id="spn_offer_offer_maturity_date">
-        @if (isset($offer->offer_maturity_date) && empty($offer->offer_maturity_date)==false)
-            {!! $offer->offer_maturity_date !!}
-        @else
-            N/A
-        @endif
-        </span>
-    </p>
-</div>
+    <!-- Start date -->
+    <div id="div_offer_offer_start_date" class="col-md-6">
+        <label class="form-label text-muted small mb-1">Offer Start Date</label>
+        <div>
+            <span id="spn_offer_offer_start_date">
+                {{ !empty($offer->offer_start_date) ? \Carbon\Carbon::parse($offer->offer_start_date)->format('jS M Y') : 'N/A' }}
+            </span>
+        </div>
+    </div>
 
-<!-- Tenor Years Field -->
-<div id="div_offer_tenor_years" class="col-sm-12 mb-10">
-    <p>
-        {!! Form::label('tenor_years', 'Tenor Years:', ['class'=>'control-label']) !!} 
-        <span id="spn_offer_tenor_years">
-        @if (isset($offer->tenor_years) && empty($offer->tenor_years)==false)
-            {!! $offer->tenor_years !!}
-        @else
-            N/A
-        @endif
-        </span>
-    </p>
-</div>
+    <!-- End date -->
+    <div id="div_offer_offer_end_date" class="col-md-6">
+        <label class="form-label text-muted small mb-1">Offer End Date</label>
+        <div>
+            <span id="spn_offer_offer_end_date">
+                {{ !empty($offer->offer_end_date) ? \Carbon\Carbon::parse($offer->offer_end_date)->format('jS M Y') : 'N/A' }}
+            </span>
+        </div>
+    </div>
 
+    <!-- Settlement date -->
+    <div id="div_offer_offer_settlement_date" class="col-md-6">
+        <label class="form-label text-muted small mb-1">Settlement Date</label>
+        <div>
+            <span id="spn_offer_offer_settlement_date">
+                {{ !empty($offer->offer_settlement_date) ? \Carbon\Carbon::parse($offer->offer_settlement_date)->format('jS M Y') : 'N/A' }}
+            </span>
+        </div>
+    </div>
+
+    <!-- Maturity date -->
+    <div id="div_offer_offer_maturity_date" class="col-md-6">
+        <label class="form-label text-muted small mb-1">Maturity Date</label>
+        <div>
+            <span id="spn_offer_offer_maturity_date">
+                {{ !empty($offer->offer_maturity_date) ? \Carbon\Carbon::parse($offer->offer_maturity_date)->format('jS M Y') : 'N/A' }}
+            </span>
+        </div>
+    </div>
+
+</div>
